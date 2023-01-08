@@ -10,6 +10,8 @@ import {
   Typography,
 } from "@mui/material";
 
+import { Link } from "react-router-dom";
+
 interface IProductCardProps {
   product: IProduct;
 }
@@ -45,7 +47,9 @@ export const ProductCard = ({ product }: IProductCardProps) => {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small">View</Button>
+        <Button component={Link} to={"/catalog/" + product.id} size="small">
+          View
+        </Button>
       </CardActions>
     </Card>
   );

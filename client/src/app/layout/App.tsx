@@ -4,9 +4,13 @@ import {
   createTheme,
   ThemeProvider,
 } from "@mui/material";
-import { Catalog } from "@/features/catalog";
-import { Header } from "./Header";
 import { useState } from "react";
+import { Routes, Route } from "react-router-dom";
+import { Header } from "./Header";
+import { Catalog, ProductDetails } from "@/features/catalog";
+import { HomePage } from "@/features/home";
+import { AboutPage } from "@/features/about";
+import { ContactPage } from "@/features/contacts";
 
 function App() {
   const [darkMode, setDarkMode] = useState(false);
@@ -29,7 +33,14 @@ function App() {
         handleChangeTheme={(mode: boolean) => setDarkMode(mode)}
       />
       <Container>
-        <Catalog />
+        <Routes>
+          <Route path="" element={<HomePage />} />
+          <Route path="/catalog" element={<Catalog />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/contacts" element={<ContactPage />} />
+          <Route path="/catalog" element={<Catalog />} />
+          <Route path="/catalog/:id" element={<ProductDetails />} />
+        </Routes>
       </Container>
     </ThemeProvider>
   );
