@@ -1,3 +1,5 @@
+import agent from "@/app/api/agent";
+import { LoadingComponent } from "@/app/layout/LoadingComponent";
 import { IProduct } from "@models/product.interface";
 import Button from "@mui/material/Button";
 import { useEffect, useState } from "react";
@@ -5,12 +7,17 @@ import { ProductList } from "./ProductList";
 
 export const Catalog = () => {
   const [products, setProducts] = useState<IProduct[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/products")
-      .then((res) => res.json())
-      .then((data) => setProducts(data));
+    agent.Catalog.list()
+      .then((products) => setProducts(products))
+      .catch((error) => console.log(error))
+      .finally(() => setLoading(false));
   }, []);
+
+  if (loading) return <LoadingComponent message="Loading products..." />;
+
   return (
     <>
       <ProductList products={products} />
