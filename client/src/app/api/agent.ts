@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 import history from "@/history";
 
 axios.defaults.baseURL = "http://localhost:5000/api/";
+axios.defaults.withCredentials = true;
 
 const sleep = (delay: number) =>
   new Promise((resolve) => setTimeout(resolve, delay));
@@ -10,7 +11,7 @@ const responseBody = (response: AxiosResponse) => response.data;
 
 axios.interceptors.response.use(
   async (response) => {
-    await sleep(1000);
+    await sleep(500);
     return response;
   },
   (error: AxiosError) => {
@@ -62,9 +63,18 @@ const TestErrors = {
   get401: () => requests.get("buggy/unauthorized"),
 };
 
+const Basket = {
+  get: () => requests.get("basket"),
+  addItem: (productId: number, quantity: number = 1) =>
+    requests.post(`basket?productId=${productId}&quantity=${quantity}`, {}),
+  removeItem: (productId: number, quantity: number = 1) =>
+    requests.del(`basket?productId=${productId}&quantity=${quantity}`),
+};
+
 const agent = {
   Catalog,
   TestErrors,
+  Basket,
 };
 
 export default agent;

@@ -1,4 +1,9 @@
+import agent from "@/app/api/agent";
+import { useStoreContext } from "@/app/context/context";
+import { LoadingComponent } from "@/app/layout/LoadingComponent";
+import { formatCurrency } from "@/app/util/util";
 import { IProduct } from "@models/product.interface";
+import { LoadingButton } from "@mui/lab";
 import {
   Avatar,
   Button,
@@ -9,6 +14,7 @@ import {
   CardMedia,
   Typography,
 } from "@mui/material";
+import { useState } from "react";
 
 import { Link } from "react-router-dom";
 
@@ -16,6 +22,20 @@ interface IProductCardProps {
   product: IProduct;
 }
 export const ProductCard = ({ product }: IProductCardProps) => {
+  const [loading, setLoading] = useState(false);
+  const { setBasket } = useStoreContext();
+
+  const handleAddItem = async (productId: number) => {
+    setLoading(true);
+    try {
+      const basket = await agent.Basket.addItem(productId);
+      setBasket(basket);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <Card>
       <CardHeader
@@ -40,13 +60,20 @@ export const ProductCard = ({ product }: IProductCardProps) => {
       />
       <CardContent>
         <Typography gutterBottom color="secondary" variant="h5">
-          133.00
+          {formatCurrency(product.price)}
         </Typography>
         <Typography variant="body2" color="text.secondary">
           {product.brand} / {product.type}
         </Typography>
       </CardContent>
       <CardActions>
+        <LoadingButton
+          loading={loading}
+          size="small"
+          onClick={() => handleAddItem(product.id)}
+        >
+          Add to cart
+        </LoadingButton>
         <Button component={Link} to={"/catalog/" + product.id} size="small">
           View
         </Button>
