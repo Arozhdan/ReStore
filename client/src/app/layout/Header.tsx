@@ -4,7 +4,7 @@ import Badge from "@mui/material/Badge";
 import IconButton from "@mui/material/IconButton";
 import ListItem from "@mui/material/ListItem";
 import { Link, NavLink } from "react-router-dom";
-import { useStoreContext } from "../context/context";
+import { useAppSelector } from "../store/configureStore";
 
 interface IHeaderProps {
   isDark: boolean;
@@ -33,7 +33,7 @@ export const Header = ({
   handleChangeTheme: changeTheme,
   isDark,
 }: IHeaderProps) => {
-  const { basket } = useStoreContext();
+  const { basket } = useAppSelector((state) => state.basket);
   const itemCount = basket?.items.reduce((sum, i) => sum + i.quantity, 0);
   return (
     <AppBar position="static" sx={{ mb: 6 }}>
