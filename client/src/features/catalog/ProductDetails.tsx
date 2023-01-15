@@ -1,7 +1,5 @@
-import agent from "@/app/api/agent";
 import { NotFound } from "@/app/errors";
 import { LoadingComponent } from "@/app/layout/LoadingComponent";
-import { IProduct } from "@/app/models/product.interface";
 import { useAppDispatch, useAppSelector } from "@/app/store/configureStore";
 import { formatCurrency } from "@/app/util/util";
 import { LoadingButton } from "@mui/lab";
